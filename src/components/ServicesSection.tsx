@@ -10,8 +10,14 @@ import {
   EmojiEvents,
   Group,
   Person,
+  Assignment,
+  School,
+  People,
+  AccountBalance,
+  WorkOutline,
 } from "@mui/icons-material";
 import { motion } from "framer-motion";
+import AboutCard from "../ui/AboutCard";
 
 // Global Styles
 const GlobalStyle = createGlobalStyle`
@@ -110,6 +116,12 @@ const FeatureColumn = styled.div`
 
 const TitleBox = styled.div`
   text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  padding: 2rem;
 `;
 
 const StyledLabel = styled.span`
@@ -143,30 +155,47 @@ const Card = styled(motion.div)`
   border-radius: 2rem;
   background: linear-gradient(
     145deg,
-    rgba(255, 255, 255, 0.6),
-    rgba(30, 136, 229, 0.1)
+    rgba(255, 255, 255, 0.9),
+    rgba(255, 255, 255, 0.6)
   );
   border: 1px solid var(--color-border);
-  box-shadow: 0px 10px 20px rgba(30, 136, 229, 0.1);
+  box-shadow: 0 4px 20px rgba(30, 136, 229, 0.1);
   backdrop-filter: blur(8px);
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 30px rgba(30, 136, 229, 0.15);
+    border-color: var(--color-brand-light);
+  }
 `;
 
 const IconBox = styled.div`
   font-size: 3rem;
   color: var(--color-brand);
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.8rem;
+  background: linear-gradient(145deg, #ffffff, var(--color-grey-light));
+  border-radius: 1.2rem;
+  width: fit-content;
+  border: 1px solid var(--color-border);
+  box-shadow: 0 4px 15px rgba(30, 136, 229, 0.1);
 `;
 
 const CardTitle = styled.h3`
   font-size: 2rem;
   font-weight: 500;
-  color: var(--color-text-dark);
+  color: var(--color-brand);
   margin-bottom: 0.5rem;
 `;
 
 const CardDesc = styled.p`
   font-size: 1.4rem;
   color: var(--color-grey);
+  line-height: 1.6;
 `;
 
 // Feature Data
@@ -179,54 +208,54 @@ type FeatureItem = {
 const leftFeatures: FeatureItem[] = [
   {
     icon: <Business />,
-    title: "Taught by Professionals",
+    title: "Integrity",
     description:
-      "Learn directly from top engineers and founders with real-world experience.",
+      "We operate with transparency and uphold the highest ethical standards in everything we do.",
   },
   {
     icon: <Group />,
-    title: "Coding Hostels",
+    title: "Partnership",
     description:
-      "Join virtual hostels to study, collaborate, and vibe with fellow learners.",
+      "We believe in long-term relationships, working hand-in-hand with clients to achieve shared goals.",
   },
   {
     icon: <EmojiEvents />,
-    title: "Bounties",
+    title: "Innovation",
     description:
-      "Win rewards for solving challenges, contributing to projects, and helping peers.",
+      "We embrace change and technology to continuously improve HR solutions.",
   },
 ];
 
 const rightFeatures: FeatureItem[] = [
   {
     icon: <ScreenShare />,
-    title: "Revision Classes",
+    title: "Empathy",
     description:
-      "Stay sharp with weekly revision sessions and topic refreshers.",
+      "We value the human side of HR, putting people at the center of every decision.",
   },
   {
     icon: <Person />,
-    title: "Peer Code Reviews",
+    title: "Talent Acquisition & Staffing",
     description:
-      "Improve faster with feedback from mentors and batchmates on your actual code.",
+      "Expert recruitment services to find the perfect match for your organization.",
   },
   {
     icon: <Lightbulb />,
-    title: "Leet Lab",
+    title: "HR Solutions",
     description:
-      "Ace coding interviews with daily DSA problems, contests, and tracking.",
+      "Comprehensive HR services including policy advisory, training, engagement, and payroll management.",
   },
 ];
 
 // Animation
 const cardVariants = {
-  hidden: { opacity: 0, y: 40 },
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.2,
-      duration: 0.6,
+      delay: i * 0.1,
+      duration: 0.4,
       ease: "easeOut",
     },
   }),
@@ -240,12 +269,99 @@ const FeatureCard = ({
   feature: FeatureItem;
   index: number;
 }) => (
-  <Card variants={cardVariants} initial="hidden" whileInView="visible" viewport={{ once: true }} custom={index}>
+  <Card
+    variants={cardVariants}
+    initial="hidden"
+    whileInView="visible"
+    viewport={{ once: true, margin: "-50px" }}
+    custom={index}
+  >
     <IconBox>{feature.icon}</IconBox>
     <CardTitle>{feature.title}</CardTitle>
     <CardDesc>{feature.description}</CardDesc>
   </Card>
 );
+
+const ServicesSection = styled.section`
+  width: 100%;
+  padding: 4rem 2rem 8rem;
+  background-color: var(--color-light-background);
+  border-top: 1px solid var(--color-grey-light);
+
+  @media (max-width: 760px) {
+    padding: 2rem 1rem 4rem;
+  }
+`;
+
+const ServicesContainer = styled.div`
+  max-width: 1120px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 4rem;
+`;
+
+const ServicesGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 3rem;
+  justify-content: center;
+  margin-top: 2rem;
+`;
+
+const ServicesDescription = styled.div`
+  max-width: 800px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: 1.6rem;
+  color: var(--color-grey);
+  line-height: 1.6;
+`;
+
+type ServiceItem = {
+  icon: React.ElementType;
+  heading: string;
+  content: string;
+};
+
+const servicesData: ServiceItem[] = [
+  {
+    icon: Business,
+    heading: "Talent Acquisition & Staffing",
+    content:
+      "Expert recruitment services to find the perfect match for your organization's needs.",
+  },
+  {
+    icon: Assignment,
+    heading: "HR Policy & Compliance",
+    content:
+      "Stay compliant with comprehensive HR policy development and regulatory guidance.",
+  },
+  {
+    icon: School,
+    heading: "Leadership Development",
+    content:
+      "Build strong leaders through targeted training and development programs.",
+  },
+  {
+    icon: People,
+    heading: "Employee Engagement",
+    content:
+      "Create a positive workplace culture with effective engagement strategies.",
+  },
+  {
+    icon: AccountBalance,
+    heading: "Payroll & Workforce Management",
+    content:
+      "Streamline your payroll processes and optimize workforce management.",
+  },
+  {
+    icon: WorkOutline,
+    heading: "Project-based Hiring",
+    content:
+      "Flexible staffing solutions for project-specific needs with skilled professionals on demand.",
+  },
+];
 
 // Main Component
 export default function Feature3() {
@@ -261,11 +377,12 @@ export default function Feature3() {
               <StyledTag>Our Services</StyledTag>
             </div>
             <StyledHeading>
-              Platform that matches businesses with top-tier talent.
+              Comprehensive HR Solutions for Your Business
             </StyledHeading>
             <StyledParagraph>
-              Our tailored approach integrates seamlessly with your existing
-              systems, ensuring a smooth experience from start to finish.
+              Whether you're scaling a startup or refining enterprise HR,
+              Aspire's experts bring deep insight and practical tools to
+              navigate your challenges.
             </StyledParagraph>
           </StyledTitleWrapper>
         </StyledServicesSection>
@@ -282,15 +399,23 @@ export default function Feature3() {
           </FeatureColumn>
 
           {/* Center Column */}
-          <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
+          <Box
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            height="100%"
+            minHeight="400px"
+          >
             <TitleBox>
-              <StyledLabel>Features</StyledLabel>
+              <StyledLabel>Our Core Values</StyledLabel>
               <Heading>
-                Key Benefits of <br />
-                <span style={{ fontWeight: "500" }}>Cohorts</span>
+                Building Trust Through <br />
+                <span style={{ fontWeight: "500" }}>Excellence</span>
               </Heading>
               <Subtext>
-                Cohorts are the best way to learn because you finish the course in a timely manner.
+                Our commitment to integrity, partnership, innovation, and
+                empathy drives everything we do.
               </Subtext>
             </TitleBox>
           </Box>
@@ -303,6 +428,35 @@ export default function Feature3() {
           </FeatureColumn>
         </Container>
       </Section>
+
+      {/* Services Section */}
+      <ServicesSection>
+        <ServicesContainer>
+          <StyledTitleWrapper>
+            <div>
+              <StyledTag>What We Offer</StyledTag>
+            </div>
+            <StyledHeading>Comprehensive HR Services</StyledHeading>
+            <ServicesDescription>
+              Whether you're scaling a startup or refining enterprise HR,
+              Aspire's experts bring deep insight and practical tools to
+              navigate your challenges. Our comprehensive suite of services is
+              designed to support your business at every stage of growth.
+            </ServicesDescription>
+          </StyledTitleWrapper>
+
+          <ServicesGrid>
+            {servicesData.map((service, index) => (
+              <AboutCard
+                key={index}
+                icon={service.icon}
+                heading={service.heading}
+                content={service.content}
+              />
+            ))}
+          </ServicesGrid>
+        </ServicesContainer>
+      </ServicesSection>
     </>
   );
 }
